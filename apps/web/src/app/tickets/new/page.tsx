@@ -24,7 +24,10 @@ export default function NewTicketPage() {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<FormValues>({ resolver: zodResolver(schema) });
+  } = useForm<FormValues>({
+    resolver: zodResolver(schema),
+    defaultValues: { priority: 'MEDIUM' },
+  });
 
   async function onSubmit(values: FormValues) {
     setBusy(true);
@@ -46,25 +49,38 @@ export default function NewTicketPage() {
       <h1 className="text-lg font-semibold">New Ticket</h1>
       <form onSubmit={handleSubmit(onSubmit)} className="mt-4 space-y-3">
         <div>
-          <input {...register('customer_name')} placeholder="Customer name" className={input} />
+          <label htmlFor="customer_name" className="mb-1 block text-sm font-medium">
+            Customer name
+          </label>
+          <input id="customer_name" {...register('customer_name')} placeholder="Customer name" className={input} />
           {errors.customer_name && (
             <p className="text-sm text-red-600">{errors.customer_name.message}</p>
           )}
         </div>
         <div>
-          <input {...register('customer_email')} placeholder="Customer email" className={input} />
+          <label htmlFor="customer_email" className="mb-1 block text-sm font-medium">
+            Customer email
+          </label>
+          <input id="customer_email" {...register('customer_email')} placeholder="Customer email" className={input} />
           {errors.customer_email && (
             <p className="text-sm text-red-600">{errors.customer_email.message}</p>
           )}
         </div>
         <div>
-          <input {...register('subject')} placeholder="Issue title" className={input} />
+          <label htmlFor="subject" className="mb-1 block text-sm font-medium">
+            Issue title
+          </label>
+          <input id="subject" {...register('subject')} placeholder="Issue title" className={input} />
           {errors.subject && (
             <p className="text-sm text-red-600">{errors.subject.message}</p>
           )}
         </div>
         <div>
+          <label htmlFor="description" className="mb-1 block text-sm font-medium">
+            Description
+          </label>
           <textarea
+            id="description"
             {...register('description')}
             placeholder="Description"
             rows={5}
@@ -75,7 +91,10 @@ export default function NewTicketPage() {
           )}
         </div>
         <div>
-          <select {...register('priority')} className={input}>
+          <label htmlFor="priority" className="mb-1 block text-sm font-medium">
+            Priority
+          </label>
+          <select id="priority" {...register('priority')} className={input} defaultValue="MEDIUM">
             <option value="LOW">LOW</option>
             <option value="MEDIUM">MEDIUM</option>
             <option value="HIGH">HIGH</option>

@@ -4,7 +4,9 @@ import { useParams } from 'next/navigation';
 import { useState } from 'react';
 import { toast } from 'sonner';
 import { StatusBadge } from '@/components/StatusBadge';
+import { PriorityBadge } from '@/components/PriorityBadge';
 import { fetchTicketDetail, updateTicket } from '@/lib/api';
+import { formatDateTimeIN } from '@/lib/format';
 
 const STATUSES = ['Open', 'In Progress', 'Closed'] as const;
 
@@ -27,6 +29,8 @@ export default function TicketDetailPage() {
     onSuccess: () => {
       toast.success('Updated');
       setNote('');
+      setStatus('');
+      setPriority('');
       qc.invalidateQueries({ queryKey: ['ticket', ticketId] });
       qc.invalidateQueries({ queryKey: ['tickets'] });
     },
@@ -39,23 +43,25 @@ export default function TicketDetailPage() {
 
   const nextStatus = status || data.status;
   const nextPriority = priority || data.priority;
+  const isDirty =
+    nextStatus !== data.status || nextPriority !== data.priority;
 
   return (
     <div className="grid gap-4 md:grid-cols-3">
       <div className="rounded border bg-white p-5 md:col-span-2">
-        <div className="flex items-center gap-3">
+        <div className="flex flex-wrap items-center gap-3">
           <h1 className="text-lg font-semibold">{data.ticket_id}</h1>
           <StatusBadge status={data.status} />
-          <span className="text-xs">{data.priority}</span>
+          <PriorityBadge priority={data.priority} />
           {data.overdue && (
             <span className="rounded bg-red-600 px-2 py-0.5 text-xs text-white">
-              Overdue · due {new Date(data.sla_due_at).toLocaleString()}
+              Overdue · due {formatDateTimeIN(data.sla_due_at)}
             </span>
           )}
         </div>
         <p className="mt-1 text-sm text-gray-500">
           {data.customer_name} · {data.customer_email} ·{' '}
-          {new Date(data.created_at).toLocaleString()}
+          {formatDateTimeIN(data.created_at)}
         </p>
         <h2 className="mt-4 font-medium">{data.subject}</h2>
         <p className="mt-1 whitespace-pre-wrap text-sm">{data.description}</p>
@@ -84,10 +90,14 @@ export default function TicketDetailPage() {
             ))}
           </select>
           <button
-            disabled={mut.isPending}
-            onClick={() =>
-              mut.mutate({ status: nextStatus, priority: nextPriority })
-            }
+            disabled={mut.isPending || !isDirty}
+            onClick={() => {
+              const payload: { status?: string; priority?: string } = {};
+              if (nextStatus !== data.status) payload.status = nextStatus;
+              if (nextPriority !== data.priority)
+                payload.priority = nextPriority;
+              mut.mutate(payload);
+            }}
             className="rounded bg-black px-3 py-2 text-sm text-white disabled:opacity-50"
           >
             Update
@@ -105,7 +115,7 @@ export default function TicketDetailPage() {
               <div key={n.id} className="rounded bg-gray-50 p-2 text-sm">
                 <p>{n.note_text}</p>
                 <p className="text-xs text-gray-500">
-                  {new Date(n.created_at).toLocaleString()}
+                  {formatDateTimeIN(n.created_at)}
                 </p>
               </div>
             ))

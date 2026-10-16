@@ -1,0 +1,18 @@
+services:
+  - type: web
+    name: support-crm-api
+    runtime: node
+    plan: free
+    buildCommand: npm install && npm run build --workspace api
+    startCommand: npm start --workspace api
+    envVars:
+      - key: NODE_VERSION
+        value: 20
+      - key: DATABASE_URL
+        sync: false
+      - key: DIRECT_URL
+        sync: false
+      - key: CORS_ORIGIN
+        sync: false
+      - key: PORT
+        value: 4000

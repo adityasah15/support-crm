@@ -69,7 +69,7 @@ export class TicketsService {
 
     const rows = await this.prisma.ticket.findMany({
       where,
-      orderBy: { createdAt: 'desc' },
+      orderBy: [{ createdAt: 'desc' }, { id: 'desc' }],
       skip: (page - 1) * limit,
       take: limit,
     });

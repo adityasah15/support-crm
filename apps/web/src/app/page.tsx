@@ -1,11 +1,13 @@
 'use client';
 import { useQuery } from '@tanstack/react-query';
 import Link from 'next/link';
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { toast } from 'sonner';
+import { PriorityBadge } from '@/components/PriorityBadge';
 import { StatusBadge } from '@/components/StatusBadge';
 import { useDebounce } from '@/hooks/useDebounce';
 import { fetchTickets } from '@/lib/api';
+import { formatDateIN } from '@/lib/format';
 
 const FILTERS = ['All', 'Open', 'In Progress', 'Closed'] as const;
 const PAGE_SIZE = 20;
@@ -34,7 +36,9 @@ export default function HomePage() {
       }),
   });
 
-  if (isError) toast.error('Failed to load tickets');
+  useEffect(() => {
+    if (isError) toast.error('Failed to load tickets');
+  }, [isError]);
 
   const rows = useMemo(() => {
     if (!data) return data;
@@ -56,7 +60,8 @@ export default function HomePage() {
             setSearch(e.target.value);
             setPage(1);
           }}
-          placeholder="Search name, ID, email, description..."
+          placeholder="Search name, ID, email, subject, description..."
+          aria-label="Search tickets"
           className="w-full rounded border px-3 py-2 md:max-w-md"
         />
         <div className="flex gap-2">
@@ -107,7 +112,7 @@ export default function HomePage() {
                   <th className="px-3 py-2">Title</th>
                   <th className="px-3 py-2">Status</th>
                   <th className="px-3 py-2">Priority</th>
-                  <th className="px-3 py-2">Date</th>
+                  <th className="px-3 py-2">Created</th>
                 </tr>
               </thead>
               <tbody>
@@ -131,10 +136,10 @@ export default function HomePage() {
                     <td className="px-3 py-2">
                       <StatusBadge status={t.status} />
                     </td>
-                    <td className="px-3 py-2 text-xs">{t.priority ?? '-'}</td>
                     <td className="px-3 py-2">
-                      {new Date(t.created_at).toLocaleDateString()}
+                      <PriorityBadge priority={t.priority} />
                     </td>
+                    <td className="px-3 py-2">{formatDateIN(t.created_at)}</td>
                   </tr>
                 ))}
               </tbody>
@@ -154,8 +159,7 @@ export default function HomePage() {
                 </div>
                 <p className="mt-1 text-sm">{t.subject}</p>
                 <p className="text-xs text-gray-500">
-                  {t.customer_name} · {t.priority} ·{' '}
-                  {new Date(t.created_at).toLocaleDateString()}{' '}
+                  {t.customer_name} · {t.priority} · {formatDateIN(t.created_at)}{' '}
                   {t.overdue && <span className="text-red-600">· Overdue</span>}
                 </p>
               </Link>

@@ -31,3 +31,8 @@ apps/web/.next/
 # vercel
 .vercel
 .neon
+
+# local spec docs (private reference, never commit)
+Datastraw_Assessment_Test.md
+AI + Tech Intern Assessment Test.pdf
+support-crm-blueprint.md

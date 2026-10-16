@@ -1,4 +1,4 @@
-import { PrismaClient, TicketStatus } from '@prisma/client';
+import { PrismaClient, Priority, TicketStatus } from '@prisma/client';
 
 const prisma = new PrismaClient();
 
@@ -9,6 +9,7 @@ type SeedTicket = {
   subject: string;
   description: string;
   status: TicketStatus;
+  priority: Priority;
   notes: string[];
   daysAgo: number;
 };
@@ -21,8 +22,9 @@ const tickets: SeedTicket[] = [
     subject: 'Login OTP not received',
     description: 'Customer is not receiving OTP on registered mobile during login. Tried resend twice.',
     status: 'OPEN',
+    priority: 'URGENT',
     notes: ['Verified phone number, carrier delay suspected.'],
-    daysAgo: 0,
+    daysAgo: 14,
   },
   {
     ticketId: 'TKT-002',
@@ -31,8 +33,9 @@ const tickets: SeedTicket[] = [
     subject: 'Refund not credited for order #4821',
     description: 'Refund initiated 5 days ago for cancelled order, amount not reflected in bank statement.',
     status: 'IN_PROGRESS',
+    priority: 'HIGH',
     notes: ['Checked payment gateway, refund in processing state.', 'Asked customer for bank reference.'],
-    daysAgo: 1,
+    daysAgo: 13,
   },
   {
     ticketId: 'TKT-003',
@@ -41,8 +44,9 @@ const tickets: SeedTicket[] = [
     subject: 'Dashboard charts not loading',
     description: 'Analytics dashboard shows blank charts on Chrome. Console shows 500 from /api/stats.',
     status: 'OPEN',
+    priority: 'MEDIUM',
     notes: [],
-    daysAgo: 1,
+    daysAgo: 12,
   },
   {
     ticketId: 'TKT-004',
@@ -51,8 +55,9 @@ const tickets: SeedTicket[] = [
     subject: 'Unable to update billing address',
     description: 'Save button spins forever when updating billing address in account settings.',
     status: 'IN_PROGRESS',
+    priority: 'MEDIUM',
     notes: ['Reproduced on staging.'],
-    daysAgo: 2,
+    daysAgo: 11,
   },
   {
     ticketId: 'TKT-005',
@@ -61,8 +66,9 @@ const tickets: SeedTicket[] = [
     subject: 'App crashes on invoice download',
     description: 'Android app v2.4 crashes when downloading invoice PDF.',
     status: 'OPEN',
+    priority: 'URGENT',
     notes: [],
-    daysAgo: 2,
+    daysAgo: 10,
   },
   {
     ticketId: 'TKT-006',
@@ -71,8 +77,9 @@ const tickets: SeedTicket[] = [
     subject: 'Password reset link expired',
     description: 'Reset link expires immediately after generation. Customer tried 3 times.',
     status: 'CLOSED',
+    priority: 'HIGH',
     notes: ['Fixed token TTL config.', 'Confirmed customer can login now.'],
-    daysAgo: 3,
+    daysAgo: 9,
   },
   {
     ticketId: 'TKT-007',
@@ -81,8 +88,9 @@ const tickets: SeedTicket[] = [
     subject: 'Duplicate charge on credit card',
     description: 'Customer charged twice for same subscription renewal on 12 Oct.',
     status: 'IN_PROGRESS',
+    priority: 'HIGH',
     notes: ['Escalated to billing team with transaction IDs.'],
-    daysAgo: 3,
+    daysAgo: 8,
   },
   {
     ticketId: 'TKT-008',
@@ -91,8 +99,9 @@ const tickets: SeedTicket[] = [
     subject: 'Export CSV missing columns',
     description: 'Ticket export CSV is missing status and date columns compared to UI.',
     status: 'OPEN',
+    priority: 'LOW',
     notes: [],
-    daysAgo: 4,
+    daysAgo: 7,
   },
   {
     ticketId: 'TKT-009',
@@ -101,8 +110,9 @@ const tickets: SeedTicket[] = [
     subject: 'SSO login fails for team domain',
     description: 'Google SSO fails for @clientco.com with 403 after OAuth callback.',
     status: 'CLOSED',
+    priority: 'MEDIUM',
     notes: ['Allowed domain was missing in OAuth config.', 'Verified with customer.'],
-    daysAgo: 5,
+    daysAgo: 6,
   },
   {
     ticketId: 'TKT-010',
@@ -111,6 +121,7 @@ const tickets: SeedTicket[] = [
     subject: 'Notification emails going to spam',
     description: 'All support reply emails land in spam for this customer domain.',
     status: 'OPEN',
+    priority: 'MEDIUM',
     notes: ['SPF/DKIM check requested.'],
     daysAgo: 5,
   },
@@ -121,8 +132,9 @@ const tickets: SeedTicket[] = [
     subject: 'Slow search on tickets page',
     description: 'Search takes 8+ seconds with 10k tickets. Needs index or debounce check.',
     status: 'IN_PROGRESS',
+    priority: 'LOW',
     notes: ['Added DB index on subject in staging for testing.'],
-    daysAgo: 6,
+    daysAgo: 4,
   },
   {
     ticketId: 'TKT-012',
@@ -131,8 +143,9 @@ const tickets: SeedTicket[] = [
     subject: 'Wrong plan shown after upgrade',
     description: 'Customer upgraded to Pro but UI still shows Free plan after payment success.',
     status: 'CLOSED',
+    priority: 'LOW',
     notes: ['Webhook delay, backfilled via Stripe event replay.'],
-    daysAgo: 7,
+    daysAgo: 3,
   },
   {
     ticketId: 'TKT-013',
@@ -141,8 +154,9 @@ const tickets: SeedTicket[] = [
     subject: 'Cannot invite team member',
     description: 'Invite email never arrives for new team member, no error shown.',
     status: 'OPEN',
+    priority: 'HIGH',
     notes: [],
-    daysAgo: 7,
+    daysAgo: 2,
   },
   {
     ticketId: 'TKT-014',
@@ -151,8 +165,9 @@ const tickets: SeedTicket[] = [
     subject: 'Order #9931 marked delivered but not received',
     description: 'Courier tracking shows delivered, customer says package not received.',
     status: 'IN_PROGRESS',
+    priority: 'URGENT',
     notes: ['Raised with logistics partner, AWB shared.'],
-    daysAgo: 8,
+    daysAgo: 1,
   },
   {
     ticketId: 'TKT-015',
@@ -161,24 +176,28 @@ const tickets: SeedTicket[] = [
     subject: 'Feature request: bulk ticket assign',
     description: 'Support lead wants bulk assign for 50+ tickets during morning triage.',
     status: 'OPEN',
+    priority: 'LOW',
     notes: ['Logged as enhancement, workaround shared.'],
-    daysAgo: 9,
+    daysAgo: 0,
   },
 ];
 
 async function main() {
+  // Clean reseed so id order = ticketId order = createdAt order.
+  // Without this, upsert keeps old createdAt and re-runs look backwards.
+  await prisma.note.deleteMany();
+  await prisma.ticket.deleteMany();
   for (const t of tickets) {
     const createdAt = new Date(Date.now() - t.daysAgo * 24 * 60 * 60 * 1000);
-    await prisma.ticket.upsert({
-      where: { ticketId: t.ticketId },
-      update: {},
-      create: {
+    await prisma.ticket.create({
+      data: {
         ticketId: t.ticketId,
         customerName: t.customerName,
         customerEmail: t.customerEmail,
         subject: t.subject,
         description: t.description,
         status: t.status,
+        priority: t.priority,
         createdAt,
         updatedAt: createdAt,
         notes: {
