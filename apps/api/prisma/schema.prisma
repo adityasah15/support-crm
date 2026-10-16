@@ -14,6 +14,13 @@ enum TicketStatus {
   CLOSED
 }
 
+enum Priority {
+  LOW
+  MEDIUM
+  HIGH
+  URGENT
+}
+
 model Ticket {
   id            Int          @id @default(autoincrement())
   ticketId      String?      @unique // e.g. TKT-001, set right after insert
@@ -22,11 +29,13 @@ model Ticket {
   subject       String
   description   String
   status        TicketStatus @default(OPEN)
+  priority      Priority     @default(MEDIUM)
   createdAt     DateTime     @default(now())
   updatedAt     DateTime     @updatedAt
   notes         Note[]
 
   @@index([status])
+  @@index([priority])
   @@index([createdAt])
   @@index([customerEmail])
 }
