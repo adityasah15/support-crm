@@ -24,15 +24,31 @@
   <img src="https://img.shields.io/badge/Tailwind_CSS-06B6D4?logo=tailwindcss&logoColor=white" alt="Tailwind CSS">
 </p>
 
-<!-- Live URLs go here after deployment -->
-<!-- Web: https://your-web-url.vercel.app -->
-<!-- API: https://your-api-url.onrender.com -->
+<p align="center">
+  <a href="https://support-crm-app.vercel.app">
+    <img src="https://img.shields.io/badge/Live%20Demo-support--crm--app.vercel.app-blue?style=for-the-badge" alt="Live Demo">
+  </a>
+</p>
+
+<p align="center">
+  Web: <a href="https://support-crm-app.vercel.app">support-crm-app.vercel.app</a>
+  ·
+  API: <a href="https://support-crm-api-czws.onrender.com/api/tickets?limit=2">support-crm-api-czws.onrender.com</a>
+</p>
 
 ---
 
 Support CRM is a clean ticketing system for small support teams. Customers raise tickets with contact info and issue details, the team triages by status and priority, and every update is tracked as a note on a timeline. Built as a typed monorepo with a NestJS API and a Next.js App Router frontend sharing one PostgreSQL database through Prisma.
 
 *Hiring assessment submission.*
+
+## Screenshots
+
+| Ticket queue | Ticket detail |
+| --- | --- |
+| ![Ticket queue](https://s0.wp.com/mshots/v1/https%3A%2F%2Fsupport-crm-app.vercel.app?w=1200) | ![Ticket detail](https://s0.wp.com/mshots/v1/https%3A%2F%2Fsupport-crm-app.vercel.app%2Ftickets%2FTKT-015?w=1200) |
+
+*Previews render live from the deployed app. To replace with static shots, save PNGs under `docs/screenshots/` and point these `<img>` tags at them.*
 
 ---
 
