@@ -1,0 +1,32 @@
+# deps
+node_modules/
+
+# env
+.env
+.env.local
+apps/api/.env
+apps/web/.env.local
+
+# builds
+dist/
+build/
+.next/
+out/
+coverage/
+
+# prisma
+*.db
+*.db-journal
+
+# nest / next
+apps/api/dist/
+apps/web/.next/
+
+# OS / editor
+.DS_Store
+*.log
+.vscode/
+.idea/
+
+# vercel
+.vercel
