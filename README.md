@@ -9,7 +9,7 @@
 </p>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/Status-In%20Active%20Development-orange" alt="Status">
+  <img src="https://img.shields.io/badge/Status-Live-success" alt="Status">
   &nbsp;
   <img src="https://img.shields.io/badge/NestJS-E0234E?logo=nestjs&logoColor=white" alt="NestJS">
   &nbsp;
@@ -44,9 +44,17 @@ Support CRM is a clean ticketing system for small support teams. Customers raise
 
 ## Screenshots
 
-| Ticket queue | Ticket detail |
-| --- | --- |
-| ![Ticket queue](docs/screenshots/queue.png) | ![Ticket detail](docs/screenshots/detail.png) |
+**Ticket queue** — search, status filter, priorities, and overdue flags
+
+![Ticket queue](docs/screenshots/queue.png)
+
+**Ticket detail** — status/priority updates and notes timeline
+
+![Ticket detail](docs/screenshots/detail.png)
+
+**New ticket** — validated create form
+
+![New ticket form](docs/screenshots/new.png)
 
 ---
 
@@ -78,14 +86,14 @@ Typed monorepo. PostgreSQL is the source of truth, accessed only through the Nes
 
 ## Tech Stack
 
-| Layer      | Technology                           |
-| ---------- | ------------------------------------ |
-| Runtime    | Node.js 20                           |
-| Backend    | NestJS                               |
-| Frontend   | Next.js + Tailwind CSS               |
-| Language   | TypeScript                           |
-| Database   | PostgreSQL + Prisma                  |
-| Deployment | Render (API) + Vercel (Web) + Neon   |
+| Layer      | Technology                         |
+| ---------- | ---------------------------------- |
+| Runtime    | Node.js 20                         |
+| Backend    | NestJS                             |
+| Frontend   | Next.js + Tailwind CSS             |
+| Language   | TypeScript                         |
+| Database   | PostgreSQL + Prisma                |
+| Deployment | Render (API) + Vercel (Web) + Neon |
 
 ---
 
@@ -108,7 +116,7 @@ Typed monorepo. PostgreSQL is the source of truth, accessed only through the Nes
 ### Detail & Collaboration
 
 - Full ticket view with contact info, subject, and description
-- Status and priority updates with dirty-checking
+- Status and priority updates (only changed fields are sent)
 - Notes timeline with `en-IN` timestamps
 
 ### Platform
@@ -139,6 +147,8 @@ support-crm/
 │           └── lib/
 ├── render.yaml
 ├── package.json
+├── LICENSE
+├── docs/screenshots/
 └── README.md
 ```
 
@@ -185,7 +195,7 @@ NEXT_PUBLIC_API_URL="http://localhost:4000/api"
 
 ```bash
 npx prisma migrate deploy --schema apps/api/prisma/schema.prisma
-npx prisma db seed
+npm run prisma:seed --workspace apps/api
 ```
 
 ### 4. Run
@@ -206,14 +216,14 @@ Once running:
 
 ## API Overview
 
-| Method | Endpoint               | Body / Query                                                  | Returns                                                        |
-| ------ | ---------------------- | ------------------------------------------------------------- | -------------------------------------------------------------- |
-| POST   | `/api/tickets`         | `{ customer_name, customer_email, subject, description, priority? }` | `{ ticket_id, created_at }`                            |
-| GET    | `/api/tickets`         | `?status=Open&search=&priority=HIGH&page=&limit=`             | `[{ ticket_id, customer_name, subject, status, priority, sla_due_at, overdue, created_at }]` |
-| GET    | `/api/tickets/:ticketId` | —                                                           | `{ ticket_id, customer_name, customer_email, subject, description, status, priority, sla_due_at, overdue, created_at, updated_at, notes[] }` |
-| PUT    | `/api/tickets/:ticketId` | `{ status?, priority?, notes? }`                            | `{ success: true, updated_at }`                                |
+| Method | Endpoint                 | Description                              |
+| ------ | ------------------------ | ---------------------------------------- |
+| POST   | `/api/tickets`           | Create a ticket, returns its ID          |
+| GET    | `/api/tickets`           | List tickets, optional status + search   |
+| GET    | `/api/tickets/:ticketId` | Full ticket with notes, 404 if missing   |
+| PUT    | `/api/tickets/:ticketId` | Update status/priority, add a note       |
 
-Status accepts `Open` / `In Progress` / `Closed`. Unknown IDs return 404. Extras (`priority`, `sla_due_at`, `overdue`, `page/limit`) are additive and backward-compatible.
+Status accepts `Open` / `In Progress` / `Closed`. List and detail responses also include `priority`, `sla_due_at`, and `overdue`.
 
 ---
 
@@ -229,4 +239,4 @@ Status accepts `Open` / `In Progress` / `Closed`. Unknown IDs return 404. Extras
 
 ## License
 
-MIT
+Licensed under the [MIT License](LICENSE).
