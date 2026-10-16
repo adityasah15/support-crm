@@ -93,6 +93,10 @@ export default function HomePage() {
 
       {isLoading ? (
         <div className="space-y-2">
+          <p className="text-sm text-gray-500">
+            Loading tickets… first load may take ~50s while the Render
+            free-tier API wakes up.
+          </p>
           {[0, 1, 2, 3].map((i) => (
             <div key={i} className="h-12 animate-pulse rounded bg-gray-200" />
           ))}

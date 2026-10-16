@@ -37,7 +37,16 @@ export default function TicketDetailPage() {
     onError: (e: any) => toast.error(e?.message ?? 'Update failed'),
   });
 
-  if (isLoading) return <div className="h-24 animate-pulse rounded bg-gray-200" />;
+  if (isLoading)
+    return (
+      <div className="space-y-2">
+        <p className="text-sm text-gray-500">
+          Loading ticket… first load may take ~50s while the Render
+          free-tier API wakes up.
+        </p>
+        <div className="h-24 animate-pulse rounded bg-gray-200" />
+      </div>
+    );
   if (isError || !data)
     return <p className="rounded border bg-white p-8 text-center">Ticket not found.</p>;
 

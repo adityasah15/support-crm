@@ -36,6 +36,8 @@
   API: <a href="https://support-crm-api-czws.onrender.com/api/tickets?limit=2">support-crm-api-czws.onrender.com</a>
 </p>
 
+> **Note:** API runs on Render free tier — first request after idle may take ~50s to wake up.
+
 ---
 
 Support CRM is a clean ticketing system for small support teams. Customers raise tickets with contact info and issue details, the team triages by status and priority, and every update is tracked as a note on a timeline. Built as a typed monorepo with a NestJS API and a Next.js App Router frontend sharing one PostgreSQL database through Prisma.
