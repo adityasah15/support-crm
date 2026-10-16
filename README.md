@@ -46,9 +46,7 @@ Support CRM is a clean ticketing system for small support teams. Customers raise
 
 | Ticket queue | Ticket detail |
 | --- | --- |
-| ![Ticket queue](https://s0.wp.com/mshots/v1/https%3A%2F%2Fsupport-crm-app.vercel.app?w=1200) | ![Ticket detail](https://s0.wp.com/mshots/v1/https%3A%2F%2Fsupport-crm-app.vercel.app%2Ftickets%2FTKT-015?w=1200) |
-
-*Previews render live from the deployed app. To replace with static shots, save PNGs under `docs/screenshots/` and point these `<img>` tags at them.*
+| ![Ticket queue](docs/screenshots/queue.png) | ![Ticket detail](docs/screenshots/detail.png) |
 
 ---
 
