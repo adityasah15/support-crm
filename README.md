@@ -33,7 +33,7 @@
 <p align="center">
   Web: <a href="https://support-crm-app.vercel.app">support-crm-app.vercel.app</a>
   ·
-  API: <a href="https://support-crm-api-czws.onrender.com/api/tickets?limit=2">support-crm-api-czws.onrender.com</a>
+  API: <a href="https://support-crm-api-czws.onrender.com/docs/">support-crm-api-czws.onrender.com/docs</a>
 </p>
 
 > **Note:** API runs on Render free tier — first request after idle may take ~50s to wake up.
